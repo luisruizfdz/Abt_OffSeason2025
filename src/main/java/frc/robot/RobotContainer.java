@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import frc.robot.commands.Cmd_Move;
 import frc.robot.commands.Cmd_Move_Motor_1;
 import frc.robot.subsystems.Sub_Motores;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -29,8 +28,9 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
-    motores.setDefaultCommand(new Cmd_Move(motores, ()-> joydrive.a().getAsBoolean()));
+    //motores.setDefaultCommand(new Cmd_Move_Motor_1(motores, ()-> joydrive.a().getAsBoolean()));
    
+    motores.setDefaultCommand(new Cmd_Move_Motor_1(motores, () -> joydrive.getLeftX()));
    // motores.setDefaultCommand(new cmd_Move_Motor1(motores));
    
   //  motores.setDefaultCommand(new Cmd_Move_Motor_1(motores, joydrive.getLeftX()));

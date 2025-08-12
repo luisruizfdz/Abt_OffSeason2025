@@ -15,6 +15,7 @@ public class Cmd_Move_Motor_1 extends Command {
   private final Sub_Motores Motores;
   private final Supplier<Double> getLeftXSupplier;
   public Cmd_Move_Motor_1(Sub_Motores motores, Supplier<Double> getLeftXSupplier) {
+    
     // Use addRequirements() here to declare subsystem dependencies.
     this.Motores=motores;
     this.getLeftXSupplier = getLeftXSupplier;
