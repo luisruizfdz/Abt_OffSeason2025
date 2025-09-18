@@ -4,9 +4,13 @@
 
 package frc.robot;
 
-import frc.robot.commands.Cmd_Move_Motor_1;
-import frc.robot.subsystems.Sub_Motores;
+import frc.robot.commands.Cmd_AlgasIntake_PID;
+import frc.robot.commands.Cmd_RuedasMove;
+import frc.robot.commands.Cmd_RuedasStop;
+import frc.robot.subsystems.Sub_IntakeAlgas;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -19,40 +23,41 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final Sub_Motores motores = new Sub_Motores();
+  private final Sub_IntakeAlgas IntakeAlgas = new Sub_IntakeAlgas();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   
-      private final CommandXboxController joydrive = new CommandXboxController(0);
+      private final CommandXboxController joysubs = new CommandXboxController(0);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
-    //motores.setDefaultCommand(new Cmd_Move_Motor_1(motores, ()-> joydrive.a().getAsBoolean()));
-   
-    motores.setDefaultCommand(new Cmd_Move_Motor_1(motores, () -> joydrive.getLeftX()));
-   // motores.setDefaultCommand(new cmd_Move_Motor1(motores));
-   
-  //  motores.setDefaultCommand(new Cmd_Move_Motor_1(motores, joydrive.getLeftX()));
-   
+    //motores.setDefaultCommand(new PIDController(motores, ()-> joydrive.a().getAsBoolean()));
 
     configureBindings();
+    
   }
 
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
+  
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
+    //PID :) aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabajo
+    //joydrive.a().onTrue(new MunecaPIDController (motores, 90));
+
+    joysubs.leftBumper().whileTrue(new SequentialCommandGroup(new ParallelCommandGroup(new Cmd_AlgasIntake_PID(IntakeAlgas, 4.7),
+    new Cmd_RuedasMove (IntakeAlgas))));
+
+    joysubs.rightBumper().whileTrue(new SequentialCommandGroup(new ParallelCommandGroup(new Cmd_AlgasIntake_PID(IntakeAlgas, 0),
+    new Cmd_RuedasStop (IntakeAlgas))));
+
+
+   
+
+
+
+    // Schedule ExampleCommand when exampleCondition changes to true
   
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
+    // Schedule exampleMethodCommand when the Xbox controller's B button is pressed,
     // cancelling on release.
    
   }

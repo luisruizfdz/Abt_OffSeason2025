@@ -7,19 +7,18 @@ package frc.robot.commands;
 import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Sub_Motores;
+import frc.robot.subsystems.Sub_IntakeAlgas;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class Cmd_Move_Motor_1 extends Command {
-  /** Creates a new Cmd_Move_Motor_1. */
-  private final Sub_Motores Motores;
-  private final Supplier<Double> getLeftXSupplier;
-  public Cmd_Move_Motor_1(Sub_Motores motores, Supplier<Double> getLeftXSupplier) {
-    
+public class Cmd_RuedasMove extends Command {
+  /** Creates a new Cmd_Move. */
+  private final Sub_IntakeAlgas Motor;
+  double coral;
+
+  public Cmd_RuedasMove(Sub_IntakeAlgas Motores){
     // Use addRequirements() here to declare subsystem dependencies.
-    this.Motores=motores;
-    this.getLeftXSupplier = getLeftXSupplier;
-    addRequirements(Motores);
+    this.Motor = Motores;
+    addRequirements(Motor);
   }
 
   // Called when the command is initially scheduled.
@@ -30,21 +29,25 @@ public class Cmd_Move_Motor_1 extends Command {
   @Override
   public void execute() {
     
+      Motor.setMotor_RuedasSpeed(-.2);
+      
+    }
+  
 
-    double leftXValue = getLeftXSupplier.get();
-    System.out.println(leftXValue);
-    Motores.setMotor1Speed(leftXValue);
-  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    
+    Motor.setMotor_RuedasSpeed(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    
+    if(Motor.coral==true){
+      return true;
+    }
+    else{return false;}
   }
 }
