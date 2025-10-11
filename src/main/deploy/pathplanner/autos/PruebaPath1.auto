@@ -1,0 +1,43 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Path1--1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Vision izquierda"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Path1--coral"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Path1--3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Vision izquierda"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

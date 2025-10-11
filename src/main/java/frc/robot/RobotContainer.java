@@ -4,10 +4,27 @@
 
 package frc.robot;
 
-import frc.robot.commands.Cmd_AlgasIntake_PID;
-import frc.robot.commands.Cmd_RuedasMove;
-import frc.robot.commands.Cmd_RuedasStop;
-import frc.robot.subsystems.Sub_IntakeAlgas;
+import frc.robot.commands.Cmd_PIDIntake;
+import frc.robot.commands.Cmd_zeroheding;
+import frc.robot.commands.Cmd_AutoAlign;
+import frc.robot.commands.Cmd_CanRange;
+import frc.robot.commands.Cmd_EndEffector;
+import frc.robot.commands.Cmd_IndexerRCanRange;
+import frc.robot.commands.Cmd_IndexerRIndependent;
+import frc.robot.commands.Cmd_IntakeEstrellas;
+import frc.robot.commands.Cmd_Move_Swerve;
+import frc.robot.commands.Cmd_PIDElevador;
+import frc.robot.subsystems.Sub_Elevador;
+import frc.robot.subsystems.Sub_EndEffector;
+import frc.robot.subsystems.Sub_Indexer;
+import frc.robot.subsystems.Sub_IntakeCoral;
+import frc.robot.subsystems.Sub_Swerve;
+
+import java.nio.file.Path;
+
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -23,16 +40,33 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final Sub_IntakeAlgas IntakeAlgas = new Sub_IntakeAlgas();
+  private final Sub_IntakeCoral IntakeCoral = new Sub_IntakeCoral();
+  //private final Sub_Indexer Indexer = new Sub_Indexer();
+  private final Sub_Swerve swerve = new  Sub_Swerve();
+ // private final Sub_Elevador Elevador = new Sub_Elevador();
+ // private final Sub_EndEffector EndEffector = new Sub_EndEffector();
+
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   
-      private final CommandXboxController joysubs = new CommandXboxController(0);
+    //private final CommandXboxController joysubs = new CommandXboxController(1);
+    private final CommandXboxController joydrive = new CommandXboxController(0);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
-    //motores.setDefaultCommand(new PIDController(motores, ()-> joydrive.a().getAsBoolean()));
+
+    NamedCommands.registerCommand("Vision derecha", new Cmd_AutoAlign(true, swerve));
+    NamedCommands.registerCommand("Vision izquierda", new Cmd_AutoAlign(false, swerve));
+
+    NamedCommands.registerCommand("Intake Coral rollers", new Cmd_IntakeEstrellas(IntakeCoral));
+    NamedCommands.registerCommand("PID Intake", new Cmd_PIDIntake(IntakeCoral, 0));
+
+    NamedCommands.registerCommand("null", getAutonomousCommand());
+
+    swerve.setDefaultCommand(new Cmd_Move_Swerve(swerve, () -> joydrive.getLeftX(), () -> joydrive.getLeftY(), ()-> joydrive.getRightX(),() -> joydrive.rightTrigger().getAsBoolean(),() -> joydrive.y().getAsBoolean()));
+  ;
+
 
     configureBindings();
     
@@ -40,20 +74,52 @@ public class RobotContainer {
 
   
   private void configureBindings() {
-    //PID :) aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabajo
-    //joydrive.a().onTrue(new MunecaPIDController (motores, 90));
+    joydrive.start().whileTrue(new Cmd_zeroheding(swerve));
+    
+    joydrive.leftBumper().whileTrue(new Cmd_AutoAlign(false, swerve));
+    joydrive.rightBumper().whileTrue(new Cmd_AutoAlign(true, swerve));
 
-    joysubs.leftBumper().whileTrue(new SequentialCommandGroup(new ParallelCommandGroup(new Cmd_AlgasIntake_PID(IntakeAlgas, 4.7),
+   // joydrive.x().whileTrue(new Cmd_IndexerRIndependent(Indexer));
+
+    //joydrive.b().toggleOnTrue(new SequentialCommandGroup(new ParallelCommandGroup(new Cmd_IntakeEstrellas(IntakeCoral), (new Cmd_IndexerRCanRange(Indexer))))); 
+
+    //joydrive.y().whileTrue(new Cmd_CanRange ());
+    
+   /*   
+   joysubs.leftBumper().whileTrue(new SequentialCommandGroup(new ParallelCommandGroup(new Cmd_AlgasIntake_PID(IntakeAlgas, 120),
     new Cmd_RuedasMove (IntakeAlgas))));
 
     joysubs.rightBumper().whileTrue(new SequentialCommandGroup(new ParallelCommandGroup(new Cmd_AlgasIntake_PID(IntakeAlgas, 0),
     new Cmd_RuedasStop (IntakeAlgas))));
+ */
+
+    //Mover el intake de corales
+    /*
+    joysubs.start().toggleOnTrue(new Cmd_PIDIntake(IntakeCoral, 120));
+
+    
+    //Mover los todos los rollers para meter el coral hasta el end effector
+    joysubs.rightBumper().whileTrue(new SequentialCommandGroup(new ParallelCommandGroup(
+      new Cmd_IndexerRollers(Indexer),
+      new Cmd_IntakeEstrellas (IntakeCoral)),
+      new Cmd_EndEffector(EndEffector/*falta ver si vamos a usar un sensor )));
+
+      
+    //Subir el elevador y activar el end effector para soltar el coral, y luego bajar el elevador
+    joysubs.b().toggleOnTrue(new SequentialCommandGroup(
+      new Cmd_PIDElevador(Elevador, 9), (
+      new Cmd_EndEffector(EndEffector/*falta ver si vamos a usar un sensor )), (
+      new Cmd_PIDElevador(Elevador, 0))));
 
 
-   
-
-
-
+    //Mover todos los rollers al reves en caso de emergencia
+    //Falta invertir esos valores
+    joysubs.back().whileTrue(new SequentialCommandGroup(new ParallelCommandGroup(
+      new Cmd_IndexerRollers(Indexer),
+      new Cmd_EndEffector(EndEffector),
+      new Cmd_IntakeEstrellas (IntakeCoral))));
+*/
+      
     // Schedule ExampleCommand when exampleCondition changes to true
   
 
@@ -68,7 +134,27 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return null;
+    
+
+//Rutina 1
+/* 
+return new SequentialCommandGroup (
+  new PathPlannerAuto("1--1"), (new Cmd_AutoAlign(false, swerve)), (
+  new PathPlannerAuto("1--coral")), (
+  new PathPlannerAuto("1--3")), (new Cmd_AutoAlign(false, swerve)));
+//Rutina 2
+*/
+
+    //return new PathPlannerAuto("PruebaPath2");
+
+//Rutina 3
+
+return new SequentialCommandGroup (
+  new PathPlannerAuto("3--1"), (new Cmd_AutoAlign(false, swerve)), (
+  new PathPlannerAuto("3--coral")), (
+  new PathPlannerAuto("3--3")), (new Cmd_AutoAlign(false, swerve)));
+ 
+ 
+ 
   }
 }

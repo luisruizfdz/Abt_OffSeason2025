@@ -1,0 +1,62 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "PID Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Path1--1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Vision derecha"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Path1--coral"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Coral rollers"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Path3--1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Vision derecha"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

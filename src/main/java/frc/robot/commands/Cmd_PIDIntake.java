@@ -2,15 +2,17 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+/////////////////////////////////////// Bajar/subir el intake de corales ///////////////////////////////////////////
+
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Sub_IntakeAlgas;
+import frc.robot.subsystems.Sub_IntakeCoral;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class Cmd_AlgasIntake_PID extends Command {
-  private final Sub_IntakeAlgas SubM;
+public class Cmd_PIDIntake extends Command {
+  private final Sub_IntakeCoral SubM;
   private final double setPoint;
   double last_time;
   double kP;
@@ -26,7 +28,7 @@ public class Cmd_AlgasIntake_PID extends Command {
   double last_error;
 
   /** Creates a new PID. */
-  public Cmd_AlgasIntake_PID(Sub_IntakeAlgas SubM, double setPoint) {
+  public Cmd_PIDIntake(Sub_IntakeCoral SubM, double setPoint) {
     this.SubM = SubM;
     this.setPoint = setPoint;    
    
@@ -36,14 +38,14 @@ public class Cmd_AlgasIntake_PID extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {    
-    double Encoder = SubM.getEncoder();
+    //double Encoder = SubM.getEncoderCoral();
 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    error = setPoint - SubM.getEncoder();
+    error = setPoint - SubM.getEncoderBrazoCoral();
     integral_zone = setPoint*0.1;
 
     kP = 0.05;
@@ -56,7 +58,7 @@ public class Cmd_AlgasIntake_PID extends Command {
     error_d = (error - last_error)/dt;
 
     if (Math.abs(error)<integral_zone){error_i+=error*dt;}
-    SubM.setMotor_AlgaSpeed(speed);
+    SubM.setMotor_IntakeSpeed(speed);
     last_time = Timer.getFPGATimestamp();
     last_error = error ;
 
@@ -65,7 +67,7 @@ public class Cmd_AlgasIntake_PID extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    SubM.setMotor_AlgaSpeed(0);
+    SubM.setMotor_IntakeSpeed(0);
   }
 
   // Returns true when the command should end.

@@ -4,21 +4,19 @@
 
 package frc.robot.commands;
 
-import java.util.function.Supplier;
+import com.ctre.phoenix6.hardware.core.CoreCANrange;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Sub_IntakeAlgas;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class Cmd_RuedasStop extends Command {
-  /** Creates a new Cmd_Move. */
-  private final Sub_IntakeAlgas Motor;
-  double coral;
-
-  public Cmd_RuedasStop(Sub_IntakeAlgas Motores){
+public class Cmd_CanRange extends Command {
+  public CoreCANrange canRange = new CoreCANrange(25);
+  public boolean coral;  
+  /** Creates a new Cmd_CanRange. */
+  public Cmd_CanRange() {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.Motor = Motores;
-    addRequirements(Motor);
+   // this.canRange = caNrange;
+
   }
 
   // Called when the command is initially scheduled.
@@ -28,26 +26,22 @@ public class Cmd_RuedasStop extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
-      Motor.setMotor_RuedasSpeed(0);
-      
-    }
-  
+    coral = canRange.getIsDetected().getValue();
 
+    if(coral){
+      System.out.println("Coral en indexer");
+    } else {
+      System.out.println("Coral no detectado");
+    }
+  }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    Motor.setMotor_RuedasSpeed(0);
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    
-    if(Motor.coral==true){
-      return true;
-    }
-    else{return false;}
+    return false;
   }
 }
