@@ -41,6 +41,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Sub_IntakeCoral IntakeCoral = new Sub_IntakeCoral();
+  private final Sub_Indexer Indexer = new Sub_Indexer();
   //private final Sub_Indexer Indexer = new Sub_Indexer();
   private final Sub_Swerve swerve = new  Sub_Swerve();
  // private final Sub_Elevador Elevador = new Sub_Elevador();
@@ -81,7 +82,7 @@ public class RobotContainer {
 
    // joydrive.x().whileTrue(new Cmd_IndexerRIndependent(Indexer));
 
-    //joydrive.b().toggleOnTrue(new SequentialCommandGroup(new ParallelCommandGroup(new Cmd_IntakeEstrellas(IntakeCoral), (new Cmd_IndexerRCanRange(Indexer))))); 
+    joydrive.b().whileTrue(new SequentialCommandGroup(new ParallelCommandGroup(new Cmd_IntakeEstrellas(IntakeCoral), (new Cmd_IndexerRIndependent(Indexer))))); 
 
     //joydrive.y().whileTrue(new Cmd_CanRange ());
     
@@ -142,18 +143,24 @@ return new SequentialCommandGroup (
   new PathPlannerAuto("1--1"), (new Cmd_AutoAlign(false, swerve)), (
   new PathPlannerAuto("1--coral")), (
   new PathPlannerAuto("1--3")), (new Cmd_AutoAlign(false, swerve)));
+ */
 //Rutina 2
-*/
 
-    //return new PathPlannerAuto("PruebaPath2");
+  //return new PathPlannerAuto("2--1");
 
 //Rutina 3
-
+/* 
 return new SequentialCommandGroup (
   new PathPlannerAuto("3--1"), (new Cmd_AutoAlign(false, swerve)), (
   new PathPlannerAuto("3--coral")), (
   new PathPlannerAuto("3--3")), (new Cmd_AutoAlign(false, swerve)));
- 
+ */
+// Rutina 1--1.5
+ //return new SequentialCommandGroup(new PathPlannerAuto("1--1"), (new Cmd_AutoAlign(false, swerve)), (new PathPlannerAuto("1--coral station")));
+
+
+//Rutina 3--3.5
+  return new SequentialCommandGroup(new PathPlannerAuto("3--1"), (new Cmd_AutoAlign(false, swerve)), (new PathPlannerAuto("3--coral station")));
  
  
   }
