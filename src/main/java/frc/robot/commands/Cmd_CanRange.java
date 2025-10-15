@@ -6,13 +6,18 @@ package frc.robot.commands;
 
 import com.ctre.phoenix6.hardware.core.CoreCANrange;
 
+import com.ctre.phoenix6.hardware.*; 
+
+
 import edu.wpi.first.wpilibj2.command.Command;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class Cmd_CanRange extends Command {
   public CoreCANrange canRange = new CoreCANrange(25);
+  double distancia; 
+  boolean objetoDetectado; 
   public boolean coral;  
-  /** Creates a new Cmd_CanRange. */
+
   public Cmd_CanRange() {
     // Use addRequirements() here to declare subsystem dependencies.
    // this.canRange = caNrange;
@@ -28,11 +33,23 @@ public class Cmd_CanRange extends Command {
   public void execute() {
     coral = canRange.getIsDetected().getValue();
 
-    if(coral){
-      System.out.println("Coral en indexer");
-    } else {
-      System.out.println("Coral no detectado");
+    distancia = canRange.getDistance().getValueAsDouble(); 
+
+    if(distancia<=0.07){
+      objetoDetectado= true; 
     }
+    else{
+      objetoDetectado= false;
+    }
+
+    if(objetoDetectado){
+      System.out.println("Funciona");
+    }
+    else{
+      System.out.println("No funciona");
+    }
+
+
   }
 
   // Called once the command ends or is interrupted.

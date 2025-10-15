@@ -6,21 +6,25 @@
 
 package frc.robot.commands;
 
+import frc.robot.subsystems.*;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Sub_Elevador;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class Cmd_PIDElevador extends Command {
+
   private final Sub_Elevador SubM;
-  private final double setPoint;
+  
+  double setPoint;
   double last_time;
   double kP;
   double kI;
   double dt;
   double error;
-  double integral_zone;
-  double output;
+  double integral_zone;    
+  double output;    
   double error_i;
   double speed;
   double error_d;
@@ -28,16 +32,19 @@ public class Cmd_PIDElevador extends Command {
   double last_error;
 
   /** Creates a new PID. */
-  public Cmd_PIDElevador(Sub_Elevador SubM, double setPoint) {
+  public Cmd_PIDElevador(Sub_Elevador SubM) {
+
     this.SubM = SubM;
-    this.setPoint = setPoint;    
+    addRequirements(SubM);
    
-    // Use addRequirements() here to declare subsystem dependencies.
+    
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {    
+
+    setPoint= 0; 
     //double Encoder = SubM.getEncoderCoral();
 
   }
@@ -45,6 +52,8 @@ public class Cmd_PIDElevador extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
+
     error = setPoint - SubM.getL_ElevadorEncoder();
     integral_zone = setPoint*0.1; //10% del error aprox
 
@@ -65,6 +74,11 @@ public class Cmd_PIDElevador extends Command {
     last_time = Timer.getFPGATimestamp();
     last_error = error ;
 
+    SubM.setL_ElevadorSpeed(-0.3);
+    SubM.setR_ElevadorSpeed(0.3);
+
+
+
   }
  
   // Called once the command ends or is interrupted.
@@ -77,12 +91,14 @@ public class Cmd_PIDElevador extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-  if (error<.7){
+  /*if (error<.7){
       return true;
     }
     else{
   
       return false;
-  }
+  }**/
+
+    return false; 
 }
 }

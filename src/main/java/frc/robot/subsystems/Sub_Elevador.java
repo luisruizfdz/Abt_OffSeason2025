@@ -31,12 +31,13 @@ public class Sub_Elevador extends SubsystemBase {
     Config_motorElevadorL.idleMode(IdleMode.kBrake); 
     motorElevadorL.configure (Config_motorElevadorL, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     motorElevadorL.getEncoder().setPosition(0);
-    Config_motorElevadorL.inverted(false);
+    Config_motorElevadorL.inverted(false
+    );
   
     Config_motorElevadorR.idleMode(IdleMode.kBrake); 
     motorElevadorR.configure (Config_motorElevadorR, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     motorElevadorR.getEncoder().setPosition(0);
-    Config_motorElevadorR.inverted(true);
+    Config_motorElevadorR.inverted(false);
 
 
    

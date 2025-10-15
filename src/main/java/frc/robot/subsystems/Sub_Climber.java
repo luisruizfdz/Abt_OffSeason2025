@@ -20,23 +20,23 @@ import frc.robot.Constants.Subsistemas;
 public class Sub_Climber extends SubsystemBase {
  
   //Motor NEO Mini
-  private final SparkMax motorRollersClimber = new SparkMax(20, MotorType.kBrushless);
-  private final SparkMaxConfig Config_motorRuedasClimber = new SparkMaxConfig();
+  private final SparkMax motorCableClimber = new SparkMax(31, MotorType.kBrushless);
+  private final SparkMaxConfig Config_motorCableClimber = new SparkMaxConfig();
 
   //Motor NEO 
-  private final SparkMax motorMoveClimber = new SparkMax(21, MotorType.kBrushless);
-  private final SparkMaxConfig Config_motorMoveClimber = new SparkMaxConfig();
+  private final SparkMax motorLlantaClimber = new SparkMax(32, MotorType.kBrushless);
+  private final SparkMaxConfig Config_motorLlantaClimber = new SparkMaxConfig();
 
   public boolean grabbed;
 
   public Sub_Climber() {
-    Config_motorRuedasClimber.idleMode(IdleMode.kBrake); 
-    motorRollersClimber.configure (Config_motorRuedasClimber, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    motorRollersClimber.getEncoder().setPosition(0);
+    Config_motorCableClimber.idleMode(IdleMode.kBrake); 
+    motorCableClimber.configure (Config_motorCableClimber, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    motorCableClimber.getEncoder().setPosition(0);
 
-    Config_motorMoveClimber.idleMode(IdleMode.kBrake); 
-    motorMoveClimber.configure (Config_motorMoveClimber, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    motorMoveClimber.getEncoder().setPosition(0);
+    Config_motorLlantaClimber.idleMode(IdleMode.kBrake); 
+    motorLlantaClimber.configure (Config_motorLlantaClimber, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    motorLlantaClimber.getEncoder().setPosition(0);
   
 
   }
@@ -49,29 +49,25 @@ public class Sub_Climber extends SubsystemBase {
     //SmartDashboard.putNumber("MoveClimber Encoder", getMotorMoveClimberEncoder());
     //SmartDashboard.putNumber("RollersClimber Current", getMotorRollersClimberCurrent());
   
-    if(getMotorRollersClimberCurrent()>=50){grabbed=true;}
+    if(getMotorCableClimberCurrent()>=50){grabbed=true;}
     else{grabbed=false;}
   }
   
   
-  public void setMotorMoveClimberSpeed(double speed) {
-    motorMoveClimber.set(speed);
+  public void setMotorCableClimberSpeed(double speed) {
+    motorCableClimber.set(speed);
   }
   
-  public double getMotorMoveClimberEncoder(){
-    return motorMoveClimber.getEncoder().getPosition()*Subsistemas.conversion_Climber; //(9:1), (5:1), (3:1)
+  public double getMotorLlantaClimberEncoder(){
+    return motorLlantaClimber.getEncoder().getPosition()*Subsistemas.conversion_Climber; //(9:1), (5:1), (3:1)
   }
 
-  public double getMotorRollersClimberCurrent(){
-    return motorRollersClimber.getOutputCurrent();
+  public double getMotorCableClimberCurrent(){
+    return motorCableClimber.getOutputCurrent();
   }
 
-  public void setMotorRollersClimberSpeed(double speed) {
-    motorRollersClimber.set(speed);
+  public void setMotorLlantaClimberSpeed(double speed) {
+    motorLlantaClimber.set(speed);
   }
   
-  public double getMotorRollersClimberEncoder(){
-    return motorRollersClimber.getEncoder().getPosition(); 
-
-}
 }

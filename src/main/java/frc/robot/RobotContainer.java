@@ -4,21 +4,15 @@
 
 package frc.robot;
 
-import frc.robot.commands.Cmd_PIDIntake;
-import frc.robot.commands.Cmd_zeroheding;
-import frc.robot.commands.Cmd_AutoAlign;
-import frc.robot.commands.Cmd_CanRange;
-import frc.robot.commands.Cmd_EndEffector;
-import frc.robot.commands.Cmd_IndexerRCanRange;
-import frc.robot.commands.Cmd_IndexerRIndependent;
-import frc.robot.commands.Cmd_IntakeEstrellas;
-import frc.robot.commands.Cmd_Move_Swerve;
-import frc.robot.commands.Cmd_PIDElevador;
+
+import frc.robot.commands.*;
 import frc.robot.subsystems.Sub_Elevador;
 import frc.robot.subsystems.Sub_EndEffector;
 import frc.robot.subsystems.Sub_Indexer;
 import frc.robot.subsystems.Sub_IntakeCoral;
 import frc.robot.subsystems.Sub_Swerve;
+
+import frc.robot.subsystems.*;
 
 import java.nio.file.Path;
 
@@ -42,6 +36,9 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Sub_IntakeCoral IntakeCoral = new Sub_IntakeCoral();
   private final Sub_Indexer Indexer = new Sub_Indexer();
+  private final Sub_Elevador SubM = new Sub_Elevador();
+  private final Sub_Climber climber= new Sub_Climber();
+  private final Sub_EndEffector EndEffector = new Sub_EndEffector(); 
   //private final Sub_Indexer Indexer = new Sub_Indexer();
   private final Sub_Swerve swerve = new  Sub_Swerve();
  // private final Sub_Elevador Elevador = new Sub_Elevador();
@@ -61,7 +58,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Vision izquierda", new Cmd_AutoAlign(false, swerve));
 
     NamedCommands.registerCommand("Intake Coral rollers", new Cmd_IntakeEstrellas(IntakeCoral));
-    NamedCommands.registerCommand("PID Intake", new Cmd_PIDIntake(IntakeCoral, 0));
+    //NamedCommands.registerCommand("PID Intake", new Cmd_PIDIntake(IntakeCoral, 0));
 
     NamedCommands.registerCommand("null", getAutonomousCommand());
 
@@ -82,7 +79,31 @@ public class RobotContainer {
 
    // joydrive.x().whileTrue(new Cmd_IndexerRIndependent(Indexer));
 
-    joydrive.b().whileTrue(new SequentialCommandGroup(new ParallelCommandGroup(new Cmd_IntakeEstrellas(IntakeCoral), (new Cmd_IndexerRIndependent(Indexer))))); 
+   
+    //Intake 
+    joydrive.a().whileTrue(new Cmd_PIDIntake(IntakeCoral));
+
+    joydrive.y().whileTrue(new SequentialCommandGroup(new ParallelCommandGroup(
+      new Cmd_IntakeEstrellas(IntakeCoral), 
+      new Cmd_IndexerRollers(Indexer), 
+      new Cmd_EndEffector(EndEffector)))); 
+
+
+    //Elevador
+    joydrive.rightTrigger().whileTrue(new Cmd_PIDElevador(SubM));
+    joydrive.leftTrigger().whileTrue(new Cmd_PIDElevadorB(SubM));
+
+    //Climber 
+   /* 
+    joydrive.x().whileTrue(new Cmd_ClimberCable(climber));
+    joydrive.y().whileTrue(new Cmd_ClimberCableB(climber));
+    joydrive.b().whileTrue(new Cmd_ClimberLlanta(climber)); 
+*/
+    //CAN Range 
+
+    //joydrive.a().whileTrue(new Cmd_CanRange()); 
+
+
 
     //joydrive.y().whileTrue(new Cmd_CanRange ());
     

@@ -12,8 +12,10 @@ import frc.robot.subsystems.Sub_IntakeCoral;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class Cmd_PIDIntake extends Command {
+ 
+ 
   private final Sub_IntakeCoral SubM;
-  private final double setPoint;
+  double setPoint;
   double last_time;
   double kP;
   double kI;
@@ -28,9 +30,9 @@ public class Cmd_PIDIntake extends Command {
   double last_error;
 
   /** Creates a new PID. */
-  public Cmd_PIDIntake(Sub_IntakeCoral SubM, double setPoint) {
+  public Cmd_PIDIntake(Sub_IntakeCoral SubM) {
     this.SubM = SubM;
-    this.setPoint = setPoint;    
+    addRequirements(SubM);    
    
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -62,6 +64,8 @@ public class Cmd_PIDIntake extends Command {
     last_time = Timer.getFPGATimestamp();
     last_error = error ;
 
+    SubM.setMotor_IntakeSpeed(0.2);
+
   }
 
   // Called once the command ends or is interrupted.
@@ -73,12 +77,13 @@ public class Cmd_PIDIntake extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-  if (error<.7){
+  /*if (error<.7){
       return true;
     }
     else{
   
       return false;
-  }
+  }**/ 
+    return false; 
 }
 }

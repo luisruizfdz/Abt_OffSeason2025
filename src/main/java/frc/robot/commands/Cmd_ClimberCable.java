@@ -6,32 +6,31 @@
 
 package frc.robot.commands;
 
-
+import frc.robot.subsystems.*; 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Sub_Climber;
+
 //import edu.wpi.first.math.controller.PIDController; 
 
-/* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class Cmd_ClimberRollers extends Command {
-  /** Creates a new Cmd_Move. */
-  private final Sub_Climber Motor;
+
+
+public class Cmd_ClimberCable extends Command {
+
+  private final Sub_Climber climber;
   double grabbed;
 
-  public Cmd_ClimberRollers(Sub_Climber Motores){
-    // Use addRequirements() here to declare subsystem dependencies.
-    this.Motor = Motores;
-    addRequirements(Motor);
+  public Cmd_ClimberCable(Sub_Climber climber){
+
+    this.climber = climber;
+    addRequirements(climber);
   }
 
-  // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     
-      Motor.setMotorRollersClimberSpeed(-.2);
+      climber.setMotorCableClimberSpeed(0.9);
       
     }
   
@@ -40,16 +39,18 @@ public class Cmd_ClimberRollers extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Motor.setMotorRollersClimberSpeed(0);
+    climber.setMotorCableClimberSpeed(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     
-    if(Motor.grabbed==true){
+    /*if(climber.grabbed==true){
       return true;
     }
-    else{return false;}
+    else{return false;} **/ 
+
+    return false; 
   }
 }

@@ -49,7 +49,7 @@ public final class Constants {
     //public static final double Conversion_muñeca = 360/81;
     
     public static final double conversion_BrazoIntake = 1/15;
-    public static final double conversion_Elevador = 1/5;
+    public static final double conversion_Elevador = 1/12;
     public static final double conversion_EndEffector = 1/4;
     public static final double conversion_Climber = 1/(9*5*3);
     
