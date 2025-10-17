@@ -29,7 +29,7 @@ public class Cmd_IntakeEstrellas extends Command {
   @Override
   public void execute() {
     
-      Motor.setMotor_EstrellasSpeed(-.5);
+      Motor.setMotor_EstrellasSpeed(-.4);
       
     }
   

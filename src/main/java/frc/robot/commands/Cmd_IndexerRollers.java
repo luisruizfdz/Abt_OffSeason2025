@@ -29,7 +29,7 @@ public class Cmd_IndexerRollers extends Command {
   @Override
   public void execute() {
     
-      Motor.setMotorIndexerSpeed(-.5);
+      Motor.setMotorIndexerSpeed(-.4);
       
     }
   

@@ -72,7 +72,7 @@ public class RobotContainer {
 
   
   private void configureBindings() {
-    joydrive.start().whileTrue(new Cmd_zeroheding(swerve));
+    //joydrive.start().whileTrue(new Cmd_zeroheding(swerve));
     
     joydrive.leftBumper().whileTrue(new Cmd_AutoAlign(false, swerve));
     joydrive.rightBumper().whileTrue(new Cmd_AutoAlign(true, swerve));
@@ -81,24 +81,28 @@ public class RobotContainer {
 
    
     //Intake 
-    joydrive.a().whileTrue(new Cmd_PIDIntake(IntakeCoral));
+    //joydrive.a().whileTrue(new Cmd_PIDIntake(IntakeCoral));
 
-    joydrive.y().whileTrue(new SequentialCommandGroup(new ParallelCommandGroup(
-      new Cmd_IntakeEstrellas(IntakeCoral), 
-      new Cmd_IndexerRollers(Indexer), 
-      new Cmd_EndEffector(EndEffector)))); 
+    //joydrive.y().whileTrue(new SequentialCommandGroup(new ParallelCommandGroup(
+      //new Cmd_IntakeEstrellas(IntakeCoral), 
+      //new Cmd_IndexerRollers(Indexer), 
+      //new Cmd_EndEffector(EndEffector)))); 
 
+
+    //joydrive.x().whileTrue(new Cmd_IntakeEstrellas(IntakeCoral));
+    //joydrive.b().whileTrue(new Cmd_IndexerRollers(Indexer));
+    //joydrive.a().whileTrue(new Cmd_EndEffector(EndEffector));
 
     //Elevador
     joydrive.rightTrigger().whileTrue(new Cmd_PIDElevador(SubM));
     joydrive.leftTrigger().whileTrue(new Cmd_PIDElevadorB(SubM));
 
     //Climber 
-   /* 
+    
     joydrive.x().whileTrue(new Cmd_ClimberCable(climber));
     joydrive.y().whileTrue(new Cmd_ClimberCableB(climber));
     joydrive.b().whileTrue(new Cmd_ClimberLlanta(climber)); 
-*/
+
     //CAN Range 
 
     //joydrive.a().whileTrue(new Cmd_CanRange()); 

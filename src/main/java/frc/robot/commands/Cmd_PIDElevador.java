@@ -43,8 +43,6 @@ public class Cmd_PIDElevador extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {    
-
-    setPoint= 0; 
     //double Encoder = SubM.getEncoderCoral();
 
   }
@@ -102,3 +100,9 @@ public class Cmd_PIDElevador extends Command {
     return false; 
 }
 }
+
+// Tasa de inflacion = (precio2 - precio1)/precio1 * 100
+
+// Inflacion moderada: subida inferior a 10% anual
+// Inflacion galopante: subida de 2 a 3 cifras (ej. 15%)
+// Hiperinflacion: subida superior a 1000% anual

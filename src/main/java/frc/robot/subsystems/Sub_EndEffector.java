@@ -19,12 +19,13 @@ import frc.robot.Constants.Subsistemas;
 public class Sub_EndEffector extends SubsystemBase {
 
   //Motor NEO Mini
-  private final SparkMax motorEndEffector = new SparkMax(18, MotorType.kBrushless);
+  private final SparkMax motorEndEffector = new SparkMax(33, MotorType.kBrushless);
   private final SparkMaxConfig Config_EndEffector = new SparkMaxConfig();
 
   public boolean coral;
 
   public Sub_EndEffector() {
+    
     Config_EndEffector.idleMode(IdleMode.kBrake); 
     motorEndEffector.configure (Config_EndEffector, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     motorEndEffector.getEncoder().setPosition(0);
@@ -39,9 +40,11 @@ public class Sub_EndEffector extends SubsystemBase {
     //SmartDashboard.putNumber("EndEffector Encoder", getEndEffectorEncoder());
     //SmartDashboard.putNumber("EndEffector Current", getEndEffectorCurrent());
 
+    /* 
     if(getEndEffectorCurrent()>=50){coral=true;}
     else{coral=false;}
-  }
+  
+  */  }
 
     //System.out.println(motor1.get());
     //System.out.println(motor1.getEncoder().getPosition()* 360/55.227);
@@ -50,6 +53,8 @@ public class Sub_EndEffector extends SubsystemBase {
   public void setMotorEndEffectorSpeed(double speed) {
     motorEndEffector.set(speed);
   }
+
+
   public double getEndEffectorEncoder(){
     return motorEndEffector.getEncoder().getPosition()*Subsistemas.conversion_EndEffector;
   }
