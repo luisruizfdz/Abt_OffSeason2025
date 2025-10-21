@@ -7,6 +7,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Sub_IntakeCoral;
 
@@ -30,8 +31,9 @@ public class Cmd_PIDIntake extends Command {
   double last_error;
 
   /** Creates a new PID. */
-  public Cmd_PIDIntake(Sub_IntakeCoral SubM) {
+  public Cmd_PIDIntake(Sub_IntakeCoral SubM, double setPoint) {
     this.SubM = SubM;
+    this.setPoint = setPoint; 
     addRequirements(SubM);    
    
     // Use addRequirements() here to declare subsystem dependencies.
@@ -56,7 +58,7 @@ public class Cmd_PIDIntake extends Command {
 
     dt = Timer.getFPGATimestamp()-last_time;
     speed = error * kP + error_i * kI + error_d * kD;
-    System.out.println(error);
+    //System.out.println(error);
     error_d = (error - last_error)/dt;
 
     if (Math.abs(error)<integral_zone){error_i+=error*dt;}
@@ -64,7 +66,9 @@ public class Cmd_PIDIntake extends Command {
     last_time = Timer.getFPGATimestamp();
     last_error = error ;
 
-    SubM.setMotor_IntakeSpeed(0.2);
+  
+
+    SubM.setMotor_IntakeSpeed(-0.3);
 
   }
 

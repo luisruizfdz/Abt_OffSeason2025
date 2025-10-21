@@ -55,7 +55,7 @@ public class Sub_Modulo extends SubsystemBase {
         configdrive.openLoopRampRate(0.2);
         
     
-        PIDgiro= new PIDController(.52, .00, 0.00);//.366 cosmo//.26 aire
+        PIDgiro= new PIDController(.6, .00, 0.00);//.366 cosmo//.26 aire
         PIDgiro.enableContinuousInput(-Math.PI, Math.PI);//Permite trabajar con los valores de 180 a -180 
 
         driveMotor.configure(configdrive, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);

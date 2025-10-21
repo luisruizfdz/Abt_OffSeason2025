@@ -48,7 +48,7 @@ public class Sub_Elevador extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     //SmartDashboard.putNumber("L_Elevador Speed", motorElevadorL.get());
-    //SmartDashboard.putNumber("L_Elevador Encoder", getL_ElevadorEncoder());
+    SmartDashboard.putNumber("L_Elevador Encoder", getL_ElevadorEncoder());
     //SmartDashboard.putNumber("R_Elevador Speed", motorElevadorR.get());
     //SmartDashboard.putNumber("R_Elevador Encoder", getR_ElevadorEncoder());
     

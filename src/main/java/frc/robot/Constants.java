@@ -31,11 +31,11 @@ public final class Constants {
     public static final double encoder_a_radianes_por_segundo=encoder_a_radianes/60;
     //Trackwidth se refiere a el ancho del robot (de los centros a las llantas)
     //public static final double trackwidth=.5277;
-    public static final double trackwidth=.6604;
+    public static final double trackwidth=.737;
     //Wheelbase es la distancia entre las dos llantas del lado derecho 
     public static final double wheelbaseentre2=trackwidth/2;
     //public static final double wheelbase=.5277;
-    public static final double wheelbase=.6604;
+    public static final double wheelbase=.737;
     //Para más dudas https://www.chiefdelphi.com/t/measuring-track-width-and-wheel-base-for-swerve-drive-frc/440389
     public static final SwerveDriveKinematics swervekinematics =new SwerveDriveKinematics(
     new Translation2d(wheelbase/2,trackwidth/2), 
@@ -48,10 +48,10 @@ public final class Constants {
   public static class Subsistemas{
     //public static final double Conversion_muñeca = 360/81;
     
-    public static final double conversion_BrazoIntake = 1/15;
-    public static final double conversion_Elevador = 1/12;
-    public static final double conversion_EndEffector = 1/4;
-    public static final double conversion_Climber = 1/(9*5*3);
+    public static final double conversion_BrazoIntake = 1/15.00;
+    public static final double conversion_Elevador = 1/12.00;
+    public static final double conversion_EndEffector = 1/4.00;
+    public static final double conversion_Climber = 1/(9*5*3.00);
     
   }
 

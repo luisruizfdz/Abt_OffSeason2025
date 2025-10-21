@@ -43,10 +43,10 @@ public class Cmd_CanRange extends Command {
     }
 
     if(objetoDetectado){
-      System.out.println("Funciona");
+      //System.out.println("Funciona");
     }
     else{
-      System.out.println("No funciona");
+      //System.out.println("No funciona");
     }
 
 

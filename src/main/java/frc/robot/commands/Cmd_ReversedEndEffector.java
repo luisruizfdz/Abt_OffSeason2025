@@ -6,19 +6,19 @@
 
 package frc.robot.commands;
 
-
+import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Sub_Indexer;
 
-/* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class Cmd_IndexerRollers extends Command {
-  /** Creates a new Cmd_Move. */
-  private final Sub_Indexer Motor;
 
-  public Cmd_IndexerRollers(Sub_Indexer Motores){
+public class Cmd_ReversedEndEffector extends Command {
+  
+  private final Sub_EndEffector effector;
+  double coral;
+
+  public Cmd_ReversedEndEffector(Sub_EndEffector effector){
     // Use addRequirements() here to declare subsystem dependencies.
-    this.Motor = Motores;
-    addRequirements(Motor);
+    this.effector = effector;
+    addRequirements(effector);
   }
 
   // Called when the command is initially scheduled.
@@ -29,7 +29,7 @@ public class Cmd_IndexerRollers extends Command {
   @Override
   public void execute() {
     
-      Motor.setMotorIndexerSpeed(-.5);
+      effector.setMotorEndEffectorSpeed(-0.4);
       
     }
   
@@ -38,15 +38,18 @@ public class Cmd_IndexerRollers extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Motor.setMotorIndexerSpeed(0);
+    effector.setMotorEndEffectorSpeed(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;
-  
+  /*
+    if(Motor.coral==true){
+      return true;
     }
+    else{return false;}
+     */
   }
-  
-
+}

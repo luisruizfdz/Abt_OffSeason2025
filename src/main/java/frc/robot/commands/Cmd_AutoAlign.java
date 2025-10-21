@@ -45,7 +45,7 @@ public class Cmd_AutoAlign extends Command {
 
     xController = new PIDController(0.255, 0, 0.0); //0.25
     yController= new PIDController(0.31, 0, 0.0); //0.3
-    rotController= new PIDController(0.018, 0, 0.0); //0.18
+    rotController= new PIDController(0.015, 0, 0.0); //0.18
 
     this.isRightScore= isRightScore; 
     this.swerve= swerve; 
@@ -72,7 +72,7 @@ public class Cmd_AutoAlign extends Command {
     yController.setSetpoint(isRightScore ? 0.2 : - 0.2);
     yController.setTolerance(0.2); //0.01
 
-    tagID= LimelightHelpers.getFiducialID("limelight-abto"); 
+    tagID= LimelightHelpers.getFiducialID("limelight-abtomat"); 
 
 
   }
@@ -85,7 +85,7 @@ public class Cmd_AutoAlign extends Command {
 
     ChassisSpeeds speeds; 
 
-    if (LimelightHelpers.getTV("limelight-abto")){
+    if (LimelightHelpers.getTV("limelight-abtomat")){
 
       this.dontSeeTagTimer.reset();
 
@@ -97,7 +97,7 @@ public class Cmd_AutoAlign extends Command {
       // [4] = yaw 
       // [5] = roll 
 
-      double[] positions = LimelightHelpers.getBotPose_TargetSpace("limelight-abto"); 
+      double[] positions = LimelightHelpers.getBotPose_TargetSpace("limelight-abtomat"); 
       SmartDashboard.putNumber("x", positions[2]); 
       SmartDashboard.putNumber("y", positions[0]);
 
@@ -109,7 +109,7 @@ public class Cmd_AutoAlign extends Command {
       double rotValue= rotController.calculate(positions[4]);
       SmartDashboard.putNumber("rotSpeed", rotValue);
       
-      yaw= NetworkTableInstance.getDefault().getTable("limelight-abto").getEntry("yaw").getDouble(0.0);
+      yaw= NetworkTableInstance.getDefault().getTable("limelight-abtomat").getEntry("yaw").getDouble(0.0);
       SmartDashboard.putNumber("yaw", yaw);
 
 
@@ -140,7 +140,7 @@ public class Cmd_AutoAlign extends Command {
         xOut= 0; 
       } **/ 
 
-      speeds= new ChassisSpeeds(xSpeed, ySpeed, rotValue);
+      speeds= new ChassisSpeeds(0, 0, rotValue);
       
       
   
@@ -151,15 +151,15 @@ public class Cmd_AutoAlign extends Command {
     }
     
     if(rotController.atSetpoint()){
-      System.out.println("giro listo");
+      //System.out.println("giro listo");
     }
 
     if(yController.atSetpoint()){
-      System.out.println("hori listo");
+      //System.out.println("hori listo");
     }
 
     if(xController.atSetpoint()){
-      System.out.println("acerca listo");
+      //System.out.println("acerca listo");
     }
 
     SmartDashboard.putNumber("poseValidTimer", stopTimer.get());
@@ -181,10 +181,10 @@ public class Cmd_AutoAlign extends Command {
   @Override
   public boolean isFinished() {
 
-    double[] positions = LimelightHelpers.getBotPose_TargetSpace("limelight-abto"); 
+    double[] positions = LimelightHelpers.getBotPose_TargetSpace("limelight-abtomat"); 
 
     if ( yController.atSetpoint() && rotController.atSetpoint() && xController.atSetpoint() ){
-      System.out.println("Se acabó el comando");
+      //System.out.println("Se acabó el comando");
       return true;
     }
     else{

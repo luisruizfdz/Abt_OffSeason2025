@@ -47,7 +47,7 @@ public class RobotContainer {
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   
-    //private final CommandXboxController joysubs = new CommandXboxController(1);
+    private final CommandXboxController joysubs = new CommandXboxController(1);
     private final CommandXboxController joydrive = new CommandXboxController(0);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -62,7 +62,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("null", getAutonomousCommand());
 
-    swerve.setDefaultCommand(new Cmd_Move_Swerve(swerve, () -> joydrive.getLeftX(), () -> joydrive.getLeftY(), ()-> joydrive.getRightX(),() -> joydrive.rightTrigger().getAsBoolean(),() -> joydrive.y().getAsBoolean()));
+    swerve.setDefaultCommand(new Cmd_Move_Swerve(swerve, () -> joydrive.getLeftX(), () -> joydrive.getLeftY(), ()-> joydrive.getRightX(),() -> joydrive.rightTrigger().getAsBoolean(),() -> joydrive.x().getAsBoolean(),() -> joydrive.b().getAsBoolean()));
   ;
 
 
@@ -72,79 +72,52 @@ public class RobotContainer {
 
   
   private void configureBindings() {
-    //joydrive.start().whileTrue(new Cmd_zeroheding(swerve));
+
+    joydrive.back().whileTrue(new Cmd_zeroheding(swerve));
     
     joydrive.leftBumper().whileTrue(new Cmd_AutoAlign(false, swerve));
     joydrive.rightBumper().whileTrue(new Cmd_AutoAlign(true, swerve));
 
-   // joydrive.x().whileTrue(new Cmd_IndexerRIndependent(Indexer));
+     //Climber 
+    joydrive.y().whileTrue(new Cmd_ClimberCable(climber));
+    joydrive.a().whileTrue(new Cmd_ClimberCableB(climber));
+    joydrive.start().whileTrue(new Cmd_ClimberLlanta(climber)); 
+ 
 
-   
+   //Normal
+      /*joysubs.y().whileTrue(new SequentialCommandGroup(new ParallelCommandGroup(
+      new Cmd_IntakeEstrellas(IntakeCoral), 
+      new Cmd_IndexerRollers(Indexer), 
+      new Cmd_EndEffector(EndEffector)))); **/
+
+      joysubs.y().whileTrue(new Cmd_IntakeEstrellas(IntakeCoral));
+
+
+    //Reversed
+      /*joysubs.a().whileTrue(new SequentialCommandGroup(new ParallelCommandGroup(
+      new Cmd_ReversedIntake(IntakeCoral), 
+      new Cmd_ReversedIndexer(Indexer), 
+      new Cmd_ReversedEndEffector(EndEffector)))); **/ 
+
+      joysubs.a().whileTrue(new Cmd_ReversedIntake(IntakeCoral));
+
+
+    //joysubs.x().whileTrue(new Cmd_IntakeEstrellas(IntakeCoral));
+    //joysubs.b().whileTrue(new Cmd_IndexerRollers(Indexer));
+    //joysubs.a().whileTrue(new Cmd_EndEffector(EndEffector));
+
+
     //Intake 
-    //joydrive.a().whileTrue(new Cmd_PIDIntake(IntakeCoral));
+    joysubs.b().whileTrue(new Cmd_PIDIntake(IntakeCoral, 1.20));
+    joysubs.x().whileTrue(new Cmd_ReversedPIDIntake(IntakeCoral, 0));
 
-    //joydrive.y().whileTrue(new SequentialCommandGroup(new ParallelCommandGroup(
-      //new Cmd_IntakeEstrellas(IntakeCoral), 
-      //new Cmd_IndexerRollers(Indexer), 
-      //new Cmd_EndEffector(EndEffector)))); 
-
-
-    //joydrive.x().whileTrue(new Cmd_IntakeEstrellas(IntakeCoral));
-    //joydrive.b().whileTrue(new Cmd_IndexerRollers(Indexer));
-    //joydrive.a().whileTrue(new Cmd_EndEffector(EndEffector));
 
     //Elevador
-    joydrive.rightTrigger().whileTrue(new Cmd_PIDElevador(SubM));
-    joydrive.leftTrigger().whileTrue(new Cmd_PIDElevadorB(SubM));
+    joysubs.rightTrigger().whileTrue(new Cmd_PIDElevador(SubM));
+    joysubs.leftTrigger().whileTrue(new Cmd_PIDElevadorB(SubM));
 
-    //Climber 
-    
-    joydrive.x().whileTrue(new Cmd_ClimberCable(climber));
-    joydrive.y().whileTrue(new Cmd_ClimberCableB(climber));
-    joydrive.b().whileTrue(new Cmd_ClimberLlanta(climber)); 
-
-    //CAN Range 
-
-    //joydrive.a().whileTrue(new Cmd_CanRange()); 
-
-
-
-    //joydrive.y().whileTrue(new Cmd_CanRange ());
-    
-   /*   
-   joysubs.leftBumper().whileTrue(new SequentialCommandGroup(new ParallelCommandGroup(new Cmd_AlgasIntake_PID(IntakeAlgas, 120),
-    new Cmd_RuedasMove (IntakeAlgas))));
-
-    joysubs.rightBumper().whileTrue(new SequentialCommandGroup(new ParallelCommandGroup(new Cmd_AlgasIntake_PID(IntakeAlgas, 0),
-    new Cmd_RuedasStop (IntakeAlgas))));
- */
-
-    //Mover el intake de corales
-    /*
-    joysubs.start().toggleOnTrue(new Cmd_PIDIntake(IntakeCoral, 120));
-
-    
-    //Mover los todos los rollers para meter el coral hasta el end effector
-    joysubs.rightBumper().whileTrue(new SequentialCommandGroup(new ParallelCommandGroup(
-      new Cmd_IndexerRollers(Indexer),
-      new Cmd_IntakeEstrellas (IntakeCoral)),
-      new Cmd_EndEffector(EndEffector/*falta ver si vamos a usar un sensor )));
-
+   
       
-    //Subir el elevador y activar el end effector para soltar el coral, y luego bajar el elevador
-    joysubs.b().toggleOnTrue(new SequentialCommandGroup(
-      new Cmd_PIDElevador(Elevador, 9), (
-      new Cmd_EndEffector(EndEffector/*falta ver si vamos a usar un sensor )), (
-      new Cmd_PIDElevador(Elevador, 0))));
-
-
-    //Mover todos los rollers al reves en caso de emergencia
-    //Falta invertir esos valores
-    joysubs.back().whileTrue(new SequentialCommandGroup(new ParallelCommandGroup(
-      new Cmd_IndexerRollers(Indexer),
-      new Cmd_EndEffector(EndEffector),
-      new Cmd_IntakeEstrellas (IntakeCoral))));
-*/
       
     // Schedule ExampleCommand when exampleCondition changes to true
   
@@ -160,7 +133,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    
+
+    return new PathPlannerAuto("2--1");
 
 //Rutina 1
 /* 
@@ -171,7 +145,6 @@ return new SequentialCommandGroup (
  */
 //Rutina 2
 
-  //return new PathPlannerAuto("2--1");
 
 //Rutina 3
 /* 
@@ -185,7 +158,7 @@ return new SequentialCommandGroup (
 
 
 //Rutina 3--3.5
-  return new SequentialCommandGroup(new PathPlannerAuto("3--1"), (new Cmd_AutoAlign(false, swerve)), (new PathPlannerAuto("3--coral station")));
+  //return new SequentialCommandGroup(new PathPlannerAuto("3--1"), (new Cmd_AutoAlign(false, swerve)), (new PathPlannerAuto("3--coral station")));
  
  
   }

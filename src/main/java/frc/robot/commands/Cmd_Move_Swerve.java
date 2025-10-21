@@ -17,14 +17,16 @@ public class Cmd_Move_Swerve extends Command {
  // private final Sub_LEDs Leds;
   private final Supplier<Double>  Xaxis,Yaxis,giros;
   private final Supplier<Boolean>fieldoriented,slow;
-  public Cmd_Move_Swerve(Sub_Swerve Sub_Swerve,Supplier<Double> Xaxis,Supplier<Double> Yaxis,Supplier<Double> giros,Supplier<Boolean> fieldoriented,Supplier<Boolean> slow) {
+  private final Supplier<Boolean> fast;
+  public Cmd_Move_Swerve(Sub_Swerve Sub_Swerve,Supplier<Double> Xaxis,Supplier<Double> Yaxis,Supplier<Double> giros,Supplier<Boolean> fieldoriented,Supplier<Boolean> slow, Supplier<Boolean> fast) {
     this.sub_Swerve=Sub_Swerve;
     this.Xaxis=Xaxis;
     this.Yaxis=Yaxis;
     this.giros=giros;
     this.fieldoriented=fieldoriented;
     this.slow=slow;
-   // this.Leds=leds;
+    this.fast=fast;
+
     addRequirements(Sub_Swerve);
   }
 
@@ -40,24 +42,24 @@ public class Cmd_Move_Swerve extends Command {
     double velocidady=(Yaxis.get())*-1;
     double velocidad_giros=giros.get()*-1;
     double fium;
-    /* if(Math.abs(velocidadx)>.3){
-      Leds.set_idle();
-    }else{
-      if (Math.abs(velocidadx)>0.6){
-        Leds.set_speed();
-      }
-    }
-*/
-    if (Math.abs(Xaxis.get())<0.05){velocidadx=0;}
-    if (Math.abs(Yaxis.get())<0.05){velocidady=0;}
-    if (Math.abs(giros.get())<0.05){velocidad_giros=0;}
 
+    if (Math.abs(Xaxis.get())<0.07){velocidadx=0;}
+    if (Math.abs(Yaxis.get())<0.07){velocidady=0;}
+    if (Math.abs(giros.get())<0.07 ){velocidad_giros=0;}
+
+    //antiboost
     if (slow.get()){
-      fium=.3;
+      fium=.7;
     }
     else{
-      fium=.3;
+      fium=.7;
     }
+
+    //boost
+    if (fast.get()){
+      fium=0.7;
+    } 
+    
 
     if (fieldoriented.get()){
       

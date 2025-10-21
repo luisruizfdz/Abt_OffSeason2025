@@ -20,7 +20,7 @@ import frc.robot.Constants.Subsistemas;
 public class Sub_Climber extends SubsystemBase {
  
   //Motor NEO Mini
-  private final SparkMax motorCableClimber = new SparkMax(31, MotorType.kBrushless);
+  private final SparkMax motorCableClimber = new SparkMax(36, MotorType.kBrushless);
   private final SparkMaxConfig Config_motorCableClimber = new SparkMaxConfig();
 
   //Motor NEO 
@@ -46,7 +46,7 @@ public class Sub_Climber extends SubsystemBase {
     // This method will be called once per scheduler run
 
     //SmartDashboard.putNumber("MoveClimber Speed", motorMoveClimber.get());
-    //SmartDashboard.putNumber("MoveClimber Encoder", getMotorMoveClimberEncoder());
+    SmartDashboard.putNumber("MoveClimber Encoder", getMotorCableClimberEncoder());
     //SmartDashboard.putNumber("RollersClimber Current", getMotorRollersClimberCurrent());
   
     if(getMotorCableClimberCurrent()>=50){grabbed=true;}
@@ -55,7 +55,13 @@ public class Sub_Climber extends SubsystemBase {
   
   
   public void setMotorCableClimberSpeed(double speed) {
+   
     motorCableClimber.set(speed);
+    
+  }
+  public double getMotorCableClimberEncoder(){
+    
+    return motorCableClimber.getEncoder().getPosition()*Subsistemas.conversion_Climber; //(9:1), (5:1), (3:1)
   }
   
   public double getMotorLlantaClimberEncoder(){

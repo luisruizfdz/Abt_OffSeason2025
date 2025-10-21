@@ -48,12 +48,8 @@ public class Sub_IntakeCoral extends SubsystemBase {
     // This method will be called once per scheduler run
    
     //SmartDashboard.putNumber("Intake Speed", motorBrazoCoral.get());
-    //SmartDashboard.putNumber("Estrellas Encoder", getEncoderBrazoCoral());
 
-
-    //System.out.println(motor1.get());
-    //System.out.println(motor1.getEncoder().getPosition()* 360/55.227);
-
+    SmartDashboard.putNumber("EncoderBrazoCoral", getEncoderBrazoCoral());
     
     
   }
